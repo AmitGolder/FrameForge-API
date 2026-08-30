@@ -99,6 +99,18 @@ namespace FrameForge.Data
                 .WithMany(s => s.Products)
                 .HasForeignKey(p => p.SeriesId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+
+            // =========================
+            // User → Orders
+            // =========================
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

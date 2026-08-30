@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace FrameForge.Models
+namespace FrameForge.DTOs
 {
-    public class User
+    public class UserDto
     {
         public int UserId { get; set; }
 
@@ -11,14 +13,8 @@ namespace FrameForge.Models
 
         public string Email { get; set; }
 
-        public string PasswordHash { get; set; }
-
         public string Role { get; set; }
 
         public DateTime CreatedAt { get; set; }
-
-
-        // Orders placed by this user
-        public ICollection<Order> Orders { get; set; }
     }
 }
