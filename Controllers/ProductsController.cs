@@ -240,33 +240,40 @@ namespace FrameForge.Controllers
                 );
             }
 
+            if (updatedProduct.StockQuantity < 0)
+            {
+                return BadRequest(
+                    "Stock quantity cannot be negative."
+                );
+            }
 
             var product = await _context.Products
                 .FirstOrDefaultAsync(
                     p => p.ProductId == id
                 );
 
-
             if (product == null)
             {
                 return NotFound();
             }
 
-
             product.Name = updatedProduct.Name;
             product.Description = updatedProduct.Description;
             product.Price = updatedProduct.Price;
-            product.StockQuantity = updatedProduct.StockQuantity;
-            product.IsAvailable = updatedProduct.IsAvailable;
+
+            product.StockQuantity =
+                updatedProduct.StockQuantity;
+
+            // Stock quantity controls availability
+            product.IsAvailable =
+                product.StockQuantity > 0;
 
             product.BrandId = updatedProduct.BrandId;
             product.ScaleId = updatedProduct.ScaleId;
             product.CategoryId = updatedProduct.CategoryId;
             product.SeriesId = updatedProduct.SeriesId;
 
-
             await _context.SaveChangesAsync();
-
 
             return NoContent();
         }
@@ -283,15 +290,22 @@ namespace FrameForge.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (product.StockQuantity < 0)
+            {
+                return BadRequest(
+                    "Stock quantity cannot be negative."
+                );
+            }
+
+            // Stock quantity controls availability
+            product.IsAvailable =
+                product.StockQuantity > 0;
 
             product.CreatedAt = DateTime.Now;
 
-
             _context.Products.Add(product);
 
-
             await _context.SaveChangesAsync();
-
 
             return CreatedAtAction(
                 nameof(GetProduct),

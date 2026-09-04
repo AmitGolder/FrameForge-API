@@ -86,10 +86,19 @@ namespace FrameForge.Controllers
 
             await _context.SaveChangesAsync();
 
+            var token = GenerateJwtToken(user);
 
             return Ok(new
             {
-                message = "User registered successfully."
+                token,
+
+                user = new
+                {
+                    user.UserId,
+                    user.Name,
+                    user.Email,
+                    user.Role
+                }
             });
         }
 
