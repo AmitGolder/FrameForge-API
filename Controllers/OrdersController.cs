@@ -223,12 +223,17 @@ namespace FrameForge.Controllers
                 }
 
 
-                if (!product.IsAvailable ||
-                    product.StockQuantity <
-                    item.Quantity)
+                if (!product.IsAvailable)
                 {
                     return BadRequest(
-                        $"{product.Name} is out of stock."
+                        $"{product.Name} is currently unavailable."
+                    );
+                }
+
+                if (product.StockQuantity < item.Quantity)
+                {
+                    return BadRequest(
+                        $"{product.Name} has only {product.StockQuantity} unit(s) left in stock."
                     );
                 }
 
